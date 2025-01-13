@@ -62,15 +62,28 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     const topicsJson = await topics.json();
     topicsJson.forEach(element => {
+        const newTopicTopDiv = document.createElement('div');
+        newTopicTopDiv.classList.add('card', 'z-depth-2', 'hoverable', 'grey', 'lighten-2');
         const newTopicDiv = document.createElement('div');
-        
+        newTopicDiv.classList.add('card-content');
+
         const topicTitle = document.createElement('span');
         topicTitle.textContent = element.title;
+        topicTitle.classList.add('card-title');
         newTopicDiv.appendChild(topicTitle);
 
         const newTopicContent = document.createElement('p');
         newTopicContent.textContent = element.content;
         newTopicDiv.appendChild(newTopicContent);
+
+        const newTopicUserField = document.createElement('p');
+        const formattedDate = new Date(element.createdAt).toLocaleString();
+        newTopicUserField.textContent = 'Poseted by: ' + element.username + ' at ' + formattedDate;
+        newTopicUserField.classList.add('grey-text', 'text-darken-2');
+        newTopicDiv.appendChild(newTopicUserField);
+
+        const newButtonDiv = document.createElement('div');
+        newButtonDiv.classList.add('card-action');
 
         const newTopicDeleteButton = document.createElement('button');
         newTopicDeleteButton.textContent = 'Delete';
@@ -94,9 +107,12 @@ document.addEventListener('DOMContentLoaded', async function() {
                 console.log(error);
             });
         });
-        newTopicDiv.appendChild(newTopicDeleteButton);
+        newTopicDeleteButton.classList.add('btn', 'waves-effect', 'waves-light');
+        newButtonDiv.appendChild(newTopicDeleteButton);
+        newTopicDiv.appendChild(newButtonDiv);
+        newTopicTopDiv.appendChild(newTopicDiv);
 
-        topicsDiv.appendChild(newTopicDiv);
+        topicsDiv.appendChild(newTopicTopDiv);
     });
 
 
