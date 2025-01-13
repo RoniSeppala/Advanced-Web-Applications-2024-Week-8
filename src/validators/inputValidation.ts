@@ -33,7 +33,7 @@ export const verifyToken = (req: CustomRequest, res: Response, next: NextFunctio
     const token: string | undefined = req.header('authorization')?.split(" ")[1]
 
     if (!token) {
-        res.status(401).send('Token not found')
+        res.status(401).json({'message':'Token not found'})
         return
     }
 
@@ -43,7 +43,7 @@ export const verifyToken = (req: CustomRequest, res: Response, next: NextFunctio
         next()
     } catch (error) {
         console.error('Error in verifyToken', error)
-        res.status(400).send('Invalid token')
+        res.status(400).json({'message': 'Invalid token'})
         return
     }
 }
@@ -51,12 +51,12 @@ export const verifyToken = (req: CustomRequest, res: Response, next: NextFunctio
 export const verifyAdmin = (req: CustomRequest, res: Response, next: NextFunction) => {  //TODO: admin verification might not work
     console.log("begining of verifyAdmin, req.user",req.user)
     if (!req.user) {
-        res.status(401).send('Token not found')
+        res.status(401).json({"message":'Token not found'})
         return
     }
     console.log("middle of verifyAdmin")
     if (typeof req.user !== 'object' || !req.user.isAdmin) {
-        res.status(403).send('Access denied')
+        res.status(403).json({"message":'Access denied'})
         return
     }
     console.log("end of verifyAdmin")
