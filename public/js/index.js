@@ -71,6 +71,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         const topicTitle = document.createElement('span');
         topicTitle.textContent = element.title;
+        topicTitle.id = 'topicTitle';
         topicTitle.classList.add('card-title');
         newTopicDiv.appendChild(topicTitle);
 
