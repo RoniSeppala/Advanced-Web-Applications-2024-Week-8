@@ -28,12 +28,39 @@ router.post('/', verifyToken, (req: CustomRequest, res: Response) => {
     }
 })
 
-router.get('/', (req: Request, res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
+    try {
+        const topics: ITopic[] = await Topic.find()
+        res.status(200).json(topics)
+        return
 
+    } catch (error) {
+        console.error('Error in fetching topics', error)
+        res.status(500).json({error: 'Internal server error'})
+        return
+    }
 })
 
-router.delete('/:id', (req: Request, res: Response) => {
+router.delete('/:id',verifyToken, verifyAdmin, async (req: Request, res: Response) => {
     const id: string = req.params.id as string
+
+    try {
+        const topic: ITopic | null = await Topic.findById(id)
+
+        if (!topic) {
+            res.status(404).send('Topic not found')
+            return
+        }
+
+        await Topic.findByIdAndDelete(id)
+        res.status(200).send('Topic deleted')
+        return
+
+    } catch (error: any) {
+        console.error('Error in topic deletion', error)
+        res.status(500).json({error: 'Internal server error'})
+        return
+    }
 })
 
 export default router;
