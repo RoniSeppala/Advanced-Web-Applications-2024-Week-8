@@ -35,7 +35,7 @@ router.post('/register',registerValidation, async (req: Request, res: Response) 
         })
 
         await newUser.save()
-
+        
         res.status(200).json(newUser)
         return
 
@@ -59,12 +59,12 @@ router.post('/login',loginValidation, async (req: Request, res: Response) => {
         const user: IUser | null = await User.findOne({email: req.body.email})
 
         if (!user) {
-            res.status(404).send("Login failed")
+            res.status(404).json({"message":"Login failed"})
             return
         }
 
         if (!bcrypt.compareSync(req.body.password, user.password)) {
-            res.status(401).send("Login failed")
+            res.status(401).json({"message":"Login failed"})
             return
         }
 
@@ -84,5 +84,6 @@ router.post('/login',loginValidation, async (req: Request, res: Response) => {
         return
     }
 });
+
 
 export default router

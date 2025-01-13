@@ -9,21 +9,27 @@ interface CustomRequest extends Request {
 const router:Router = Router();
 
 
-router.post('/', verifyToken, (req: CustomRequest, res: Response) => {
+router.post('/', verifyToken, async (req: CustomRequest, res: Response) => {
     try {
+        if (!req.body.title || !req.body.content) {
+            res.status(400).json({message: 'Title and content are required.'})
+            return
+        }
+
         const newTopic: ITopic = new Topic({
             title: req.body.title,
             content: req.body.content,
             username: req.user?.username
         })
 
-        newTopic.save()
+        await newTopic.save()
 
         res.status(200).json(newTopic)
+        return
 
     } catch (error) {
         console.error('Error in posting', error)
-        res.status(500).json({error: 'Internal server error'})
+        res.status(500).json({message: 'Internal server error'})
         return
     }
 })
@@ -36,7 +42,7 @@ router.get('/', async (req: Request, res: Response) => {
 
     } catch (error) {
         console.error('Error in fetching topics', error)
-        res.status(500).json({error: 'Internal server error'})
+        res.status(500).json({message: 'Internal server error'})
         return
     }
 })
@@ -61,7 +67,7 @@ router.delete('/:id',verifyToken, verifyAdmin, async (req: Request, res: Respons
 
     } catch (error: any) {
         console.error('Error in topic deletion', error)
-        res.status(500).json({error: 'Internal server error'})
+        res.status(500).json({message: 'Internal server error'})
         return
     }
 })
