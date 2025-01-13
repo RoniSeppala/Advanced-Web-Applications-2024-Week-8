@@ -39,7 +39,7 @@ router.post('/register',registerValidation, async (req: Request, res: Response) 
         res.status(200).json(newUser)
         return
 
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error in registration', error)
         res.status(500).json({error: 'Internal server error'})
         return
@@ -78,7 +78,7 @@ router.post('/login',loginValidation, async (req: Request, res: Response) => {
 
         res.status(200).json({token: token})
 
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error in login', error)
         res.status(500).json({error: 'Internal server error'})
         return
