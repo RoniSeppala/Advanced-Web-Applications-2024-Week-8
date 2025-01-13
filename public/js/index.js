@@ -1,4 +1,6 @@
-document.addEventListener('DOMContentLoaded', function() {
+const topicsDiv = document.getElementById('topics');
+
+document.addEventListener('DOMContentLoaded', async function() {
     const preCutToken = localStorage.getItem('authorization')
     const token = preCutToken.split(' ')[1];
     const topicForm = document.getElementById('topicForm');
@@ -41,6 +43,55 @@ document.addEventListener('DOMContentLoaded', function() {
         submitButton.id = 'postTopic';
         topicForm.appendChild(submitButton);
     }
+
+    //load topics
+
+    const topics = await fetch('/api/topic')
+
+    if (!topics.ok) {
+        console.log('Error fetching topics');
+        return;
+    }
+
+    const topicsJson = await topics.json();
+    topicsJson.forEach(element => {
+        const newTopicDiv = document.createElement('div');
+        
+        const topicTitle = document.createElement('span');
+        topicTitle.textContent = element.title;
+        newTopicDiv.appendChild(topicTitle);
+
+        const newTopicContent = document.createElement('p');
+        newTopicContent.textContent = element.content;
+        newTopicDiv.appendChild(newTopicContent);
+
+        const newTopicDeleteButton = document.createElement('button');
+        newTopicDeleteButton.textContent = 'Delete';
+        newTopicDeleteButton.addEventListener('click', function() {
+            fetch('/api/topic/' + element._id, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': preCutToken
+                }
+            }).then((res) => res.json())
+            .then((data) => {
+                if (data.message) {
+                    alert(data.message);
+                    window.location.href = '/index.html';
+                } else {
+                    alert('Topic deleted successfully');
+                    window.location.href = '/index.html';
+                }
+            }).catch((error) => {
+                console.log(error);
+            });
+        });
+        newTopicDiv.appendChild(newTopicDeleteButton);
+
+        topicsDiv.appendChild(newTopicDiv);
+    });
+
+
 });
 
 document.getElementById('loginForm').addEventListener('submit', function(event) {
