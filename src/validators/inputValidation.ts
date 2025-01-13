@@ -39,7 +39,7 @@ export const verifyToken = (req: CustomRequest, res: Response, next: NextFunctio
     }
 
     try {
-        const verified: JwtPayload = jwt.verify(token, process.env.TOKEN_SECRET as string) as JwtPayload
+        const verified: JwtPayload = jwt.verify(token, process.env.JWT_SECRET as string) as JwtPayload
         req.user = verified
         next()
     } catch (error) {
