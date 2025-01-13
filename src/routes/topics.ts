@@ -9,7 +9,7 @@ interface CustomRequest extends Request {
 const router:Router = Router();
 
 
-router.post('/', verifyToken, async (req: CustomRequest, res: Response) => {
+router.post('/topic', verifyToken, async (req: CustomRequest, res: Response) => {
     try {
         if (!req.body.title || !req.body.content) {
             res.status(400).json({message: 'Title and content are required.'})
@@ -34,7 +34,7 @@ router.post('/', verifyToken, async (req: CustomRequest, res: Response) => {
     }
 })
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/topics', async (req: Request, res: Response) => {
     try {
         const topics: ITopic[] = await Topic.find()
         res.status(200).json(topics)
@@ -47,7 +47,7 @@ router.get('/', async (req: Request, res: Response) => {
     }
 })
 
-router.delete('/:id',verifyToken, verifyAdmin, async (req: Request, res: Response) => {
+router.delete('topic/:id',verifyToken, verifyAdmin, async (req: Request, res: Response) => {
     console.log("detel beginging")
     const id: string = req.params.id as string
     console.log("id",id)

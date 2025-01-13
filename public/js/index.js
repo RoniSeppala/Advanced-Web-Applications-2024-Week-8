@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     //load topics
 
-    const topics = await fetch('/api/topic')
+    const topics = await fetch('/api/topics')
 
     if (!topics.ok) {
         console.log('Error fetching topics');
