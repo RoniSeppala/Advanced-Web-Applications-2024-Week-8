@@ -2,6 +2,7 @@ const topicsDiv = document.getElementById('topics');
 
 document.addEventListener('DOMContentLoaded', async function() {
     const preCutToken = localStorage.getItem('authorization')
+    console.log(preCutToken)
     const token = preCutToken.split(' ')[1];
     const topicForm = document.getElementById('topicForm');
 
