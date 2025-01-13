@@ -2,10 +2,20 @@ import { Router, Request, Response } from 'express';
 import { User, IUser } from '../models/User';
 import bcrypt from 'bcrypt';
 import jwt, { JwtPayload } from 'jsonwebtoken'
+import { registerValidation, loginValidation } from '../validators/inputValidation';
+import { Result, ValidationError, validationResult } from 'express-validator';
 
 const router:Router = Router();
 
-router.post('/register', async (req: Request, res: Response) => {
+router.post('/register',registerValidation, async (req: Request, res: Response) => {
+    const errors: Result<ValidationError> = validationResult(req)
+
+    if (!errors.isEmpty()) {
+        console.log(errors)
+        res.status(400).json({errors: errors.array()})
+        return
+    }
+
     try {
         const existingUser: IUser | null = await User.findOne({email: req.body.email})
 
@@ -36,7 +46,15 @@ router.post('/register', async (req: Request, res: Response) => {
     }
 });
 
-router.post('/login', async (req: Request, res: Response) => {
+router.post('/login',loginValidation, async (req: Request, res: Response) => {
+    const errors: Result<ValidationError> = validationResult(req)
+
+    if (!errors.isEmpty()) {
+        console.log(errors)
+        res.status(400).json({errors: errors.array()})
+        return
+    }
+    
     try {
         const user: IUser | null = await User.findOne({email: req.body.email})
 
