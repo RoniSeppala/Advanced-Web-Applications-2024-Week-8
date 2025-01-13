@@ -42,10 +42,13 @@ router.get('/', async (req: Request, res: Response) => {
 })
 
 router.delete('/:id',verifyToken, verifyAdmin, async (req: Request, res: Response) => {
+    console.log("detel beginging")
     const id: string = req.params.id as string
+    console.log("id",id)    
 
     try {
         const topic: ITopic | null = await Topic.findById(id)
+        console.log("topic",topic)
 
         if (!topic) {
             res.status(404).send('Topic not found')
