@@ -1,0 +1,66 @@
+import { Router, Request, Response } from 'express';
+import { IUser } from '../models/User'; // Assuming you have a User model
+import { Topic, ITopic } from '../models/Topic';
+import { verifyToken, verifyAdmin } from '../validators/inputValidation';
+interface CustomRequest extends Request {
+    user?: IUser;
+}
+
+const router:Router = Router();
+
+
+router.post('/', verifyToken, (req: CustomRequest, res: Response) => {
+    try {
+        const newTopic: ITopic = new Topic({
+            title: req.body.title,
+            content: req.body.content,
+            username: req.user?.username
+        })
+
+        newTopic.save()
+
+        res.status(200).json(newTopic)
+
+    } catch (error) {
+        console.error('Error in posting', error)
+        res.status(500).json({error: 'Internal server error'})
+        return
+    }
+})
+
+router.get('/', async (req: Request, res: Response) => {
+    try {
+        const topics: ITopic[] = await Topic.find()
+        res.status(200).json(topics)
+        return
+
+    } catch (error) {
+        console.error('Error in fetching topics', error)
+        res.status(500).json({error: 'Internal server error'})
+        return
+    }
+})
+
+router.delete('/:id',verifyToken, verifyAdmin, async (req: Request, res: Response) => {
+    const id: string = req.params.id as string
+
+    try {
+        const topic: ITopic | null = await Topic.findById(id)
+
+        if (!topic) {
+            res.status(404).send('Topic not found')
+            return
+        }
+
+        await Topic.findByIdAndDelete(id)
+        res.status(200).send('Topic deleted')
+        return
+
+    } catch (error: any) {
+        console.error('Error in topic deletion', error)
+        res.status(500).json({error: 'Internal server error'})
+        return
+    }
+})
+
+export default router;
