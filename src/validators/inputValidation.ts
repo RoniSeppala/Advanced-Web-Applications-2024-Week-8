@@ -31,6 +31,7 @@ interface CustomRequest extends Request {
 
 export const verifyToken = (req: CustomRequest, res: Response, next: NextFunction) => {
     const token: string | undefined = req.header('authorization')?.split(" ")[1]
+    console.log('Token:', token)
 
     if (!token) {
         res.status(401).send('Token not found')
