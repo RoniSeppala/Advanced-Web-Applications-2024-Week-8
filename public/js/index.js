@@ -74,6 +74,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         const newTopicDeleteButton = document.createElement('button');
         newTopicDeleteButton.textContent = 'Delete';
+        newTopicDeleteButton.id = 'deleteTopic';
         newTopicDeleteButton.addEventListener('click', function() {
             fetch('/api/topic/' + element._id, {
                 method: 'DELETE',
