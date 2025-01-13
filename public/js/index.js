@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         const topicTextArea = document.createElement('textarea');
         topicTextArea.setAttribute('id', 'topicText');
+        topicTextArea.classList.add('materialize-textarea');
         topicForm.appendChild(topicTextArea);
 
         const submitButton = document.createElement('button');
@@ -48,6 +49,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             });
         });
         submitButton.id = 'postTopic';
+        submitButton.classList.add('btn', 'waves-effect', 'waves-light');
         topicForm.appendChild(submitButton);
     }
 
