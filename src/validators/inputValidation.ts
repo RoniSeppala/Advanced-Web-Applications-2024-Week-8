@@ -15,7 +15,7 @@ export const registerValidation = [
                     .trim()
                     .escape(),
     body('username').optional().isLength({min:3, max:25}).trim().escape(),
-    body('isAdmin').optional().isBoolean().escape()
+    body('isAdmin').optional().isBoolean().escape().default(false)
 ]
 
 export const loginValidation = [
@@ -31,7 +31,6 @@ interface CustomRequest extends Request {
 
 export const verifyToken = (req: CustomRequest, res: Response, next: NextFunction) => {
     const token: string | undefined = req.header('authorization')?.split(" ")[1]
-    console.log('Token:', token)
 
     if (!token) {
         res.status(401).send('Token not found')

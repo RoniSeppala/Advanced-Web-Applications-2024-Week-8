@@ -53,7 +53,7 @@ router.delete('/:id',verifyToken, verifyAdmin, async (req: Request, res: Respons
         }
 
         await Topic.findByIdAndDelete(id)
-        res.status(200).send('Topic deleted')
+        res.status(200).send('Topic deleted successfully')
         return
 
     } catch (error: any) {
