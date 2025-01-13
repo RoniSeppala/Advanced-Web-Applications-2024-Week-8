@@ -3,7 +3,13 @@ const topicsDiv = document.getElementById('topics');
 document.addEventListener('DOMContentLoaded', async function() {
     const preCutToken = localStorage.getItem('authorization')
     console.log(preCutToken)
-    const token = preCutToken.split(' ')[1];
+    let token = '';
+    try {
+        token = preCutToken.split(' ')[1];
+    } catch (error) {
+        console.log(error)
+        token = preCutToken
+    }
     const topicForm = document.getElementById('topicForm');
 
     if (token) { //TODO: add token validation
