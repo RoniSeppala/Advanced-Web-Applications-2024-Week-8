@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { User, IUser } from '../models/User';
 import bcrypt from 'bcrypt';
+import jwt, { JwtPayload } from 'jsonwebtoken'
 
 const router:Router = Router();
 
@@ -30,6 +31,37 @@ router.post('/register', async (req: Request, res: Response) => {
 
     } catch (error) {
         console.error('Error in registration', error)
+        res.status(500).json({error: 'Internal server error'})
+        return
+    }
+});
+
+router.post('/login', async (req: Request, res: Response) => {
+    try {
+        const user: IUser | null = await User.findOne({email: req.body.email})
+
+        if (!user) {
+            res.status(404).send("Login failed")
+            return
+        }
+
+        if (!bcrypt.compareSync(req.body.password, user.password)) {
+            res.status(401).send("Login failed")
+            return
+        }
+
+        const payload: JwtPayload = {
+            id: user._id,
+            username: user.username,
+            isAdmin: user.isAdmin
+        }
+
+        const token: string = jwt.sign(payload, process.env.JWT_SECRET as string, {expiresIn: '5m'})
+
+        res.status(200).json({token: token})
+
+    } catch (error) {
+        console.error('Error in login', error)
         res.status(500).json({error: 'Internal server error'})
         return
     }
