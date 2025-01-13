@@ -9,13 +9,13 @@ export const registerValidation = [
                     .matches(/[!@#$%^&*(),.?":{}|<>]/).withMessage('Password must contain at least one special character')
                     .trim()
                     .escape(),
-    body('username').isLength({min:3, max:25}).trim().escape(),
-    body('isAdmin').isBoolean().escape()
+    body('username').optional().isLength({min:3, max:25}).trim().escape(),
+    body('isAdmin').optional().isBoolean().escape()
 ]
 
 export const loginValidation = [
     body('email').isEmail().normalizeEmail().trim().escape(),
     body('password').trim().escape(),
-    body('username').trim().escape(),
-    body('isAdmin').isBoolean().escape()
+    body('username').optional().trim().escape(),
+    body('isAdmin').optional().isBoolean().escape()
 ]
