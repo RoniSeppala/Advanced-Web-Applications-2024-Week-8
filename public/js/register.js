@@ -26,7 +26,7 @@ document.getElementById("registerForm").addEventListener("submit", function(even
             console.log(data.errors);
         } else {
             alert("User registered successfully");
-            window.location.href = "/index.html";
+            window.location.href = "/";
         }
     }).catch((error) => {
         console.log(error);

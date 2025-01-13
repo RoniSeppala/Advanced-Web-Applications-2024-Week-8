@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                     alert(data.message);
                 } else {
                     alert('Topic posted successfully');
-                    window.location.href = '/index.html';
+                    window.location.href = '/';
                 }
             }).catch((error) => {
                 console.log(error);
@@ -84,10 +84,10 @@ document.addEventListener('DOMContentLoaded', async function() {
             .then((data) => {
                 if (data.message) {
                     alert(data.message);
-                    window.location.href = '/index.html';
+                    window.location.href = '/';
                 } else {
                     alert('Topic deleted successfully');
-                    window.location.href = '/index.html';
+                    window.location.href = '/';
                 }
             }).catch((error) => {
                 console.log(error);
@@ -121,7 +121,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         } else {
             alert('Logged in successfully');
             localStorage.setItem('authorization', "Bearer " + data.token);
-            window.location.href = '/index.html';
+            window.location.href = '/';
         }
     }).catch((error) => {
         console.log(error);
