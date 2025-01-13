@@ -51,12 +51,12 @@ router.delete('/:id',verifyToken, verifyAdmin, async (req: Request, res: Respons
         console.log("topic",topic)
 
         if (!topic) {
-            res.status(404).send('Topic not found')
+            res.status(404).json({message:'Topic not found'})
             return
         }
 
         await Topic.findByIdAndDelete(id)
-        res.status(200).send('Topic deleted successfully')
+        res.status(200).json({message:'Topic deleted successfully.'})
         return
 
     } catch (error: any) {

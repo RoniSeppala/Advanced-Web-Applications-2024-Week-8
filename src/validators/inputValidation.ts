@@ -56,7 +56,7 @@ export const verifyAdmin = (req: CustomRequest, res: Response, next: NextFunctio
     }
     console.log("middle of verifyAdmin")
     if (typeof req.user !== 'object' || !req.user.isAdmin) {
-        res.status(403).json({"message":'Access denied'})
+        res.status(403).json({"message":'Access denied.'})
         return
     }
     console.log("end of verifyAdmin")
