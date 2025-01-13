@@ -49,7 +49,12 @@ export const verifyToken = (req: CustomRequest, res: Response, next: NextFunctio
 }
 
 export const verifyAdmin = (req: CustomRequest, res: Response, next: NextFunction) => {  //TODO: admin verification might not work
-    if (!req.user?.isAdmin) {
+    if (!req.user) {
+        res.status(401).send('Token not found')
+        return
+    }
+
+    if (typeof req.user !== 'object' || !req.user.isAdmin) {
         res.status(403).send('Access denied')
         return
     }
