@@ -54,7 +54,7 @@ router.post('/login',loginValidation, async (req: Request, res: Response) => {
         res.status(400).json({errors: errors.array()})
         return
     }
-    
+
     try {
         const user: IUser | null = await User.findOne({email: req.body.email})
 

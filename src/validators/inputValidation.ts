@@ -1,4 +1,9 @@
+import {Request, Response, NextFunction} from "express"
 import { body } from "express-validator"
+import jwt, { JwtPayload } from "jsonwebtoken"
+import dotenv from "dotenv"
+
+dotenv.config()
 
 export const registerValidation = [
     body('email').isEmail().normalizeEmail().trim().escape(),
@@ -19,3 +24,34 @@ export const loginValidation = [
     body('username').optional().trim().escape(),
     body('isAdmin').optional().isBoolean().escape()
 ]
+
+interface CustomRequest extends Request {
+    user?: JwtPayload
+}
+
+export const verifyToken = (req: CustomRequest, res: Response, next: NextFunction) => {
+    const token: string | undefined = req.header('authorization')?.split(" ")[1]
+
+    if (!token) {
+        res.status(401).send('Token not found')
+        return
+    }
+
+    try {
+        const verified: JwtPayload = jwt.verify(token, process.env.TOKEN_SECRET as string) as JwtPayload
+        req.user = verified
+        next()
+    } catch (error) {
+        console.error('Error in verifyToken', error)
+        res.status(400).send('Invalid token')
+        return
+    }
+}
+
+export const verifyAdmin = (req: CustomRequest, res: Response, next: NextFunction) => {  //TODO: admin verification might not work
+    if (!req.user?.isAdmin) {
+        res.status(403).send('Access denied')
+        return
+    }
+    next()
+}
