@@ -47,7 +47,7 @@ router.get('/topics', async (req: Request, res: Response) => {
     }
 })
 
-router.delete('topic/:id',verifyToken, verifyAdmin, async (req: Request, res: Response) => {
+router.delete('/topic/:id',verifyToken, verifyAdmin, async (req: Request, res: Response) => {
     console.log("detel beginging")
     const id: string = req.params.id as string
     console.log("id",id)
