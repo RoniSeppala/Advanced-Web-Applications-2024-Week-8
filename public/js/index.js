@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 body: JSON.stringify({title: title, content: text})
             }).then((res) => res.json())
             .then((data) => {
-                if (data.message) {
+                if (data.message != "Topic created successfully.") {
                     alert(data.message);
                 } else {
                     alert('Topic posted successfully');
